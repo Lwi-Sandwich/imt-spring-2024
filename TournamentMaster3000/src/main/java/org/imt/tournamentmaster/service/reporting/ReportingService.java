@@ -1,9 +1,9 @@
 package org.imt.tournamentmaster.service.reporting;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.imt.tournamentmaster.model.resultat.Resultat;
+import org.imt.tournamentmaster.model.match.Match;
 
 public interface ReportingService {
 
-    String report(Resultat resultat) throws JsonProcessingException;
+    String report(Match match) throws JsonProcessingException;
 }
