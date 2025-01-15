@@ -1,5 +1,6 @@
 package org.imt.tournamentmaster.controller.equipe;
 
+import org.imt.tournamentmaster.dto.EquipeDTO;
 import org.imt.tournamentmaster.model.equipe.Equipe;
 import org.imt.tournamentmaster.service.equipe.EquipeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,13 @@ public class EquipeController {
     }
 
     @PostMapping
-    public ResponseEntity<Equipe> create(@RequestBody Equipe equipe) {
-        return ResponseEntity.ok(equipeService.create(equipe));
+    public ResponseEntity<Equipe> create(@RequestBody EquipeDTO equipeDTO) {
+        return ResponseEntity.ok(equipeService.create(equipeDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Equipe> update(@PathVariable long id, @RequestBody Equipe equipe) {
-        Optional<Equipe> updatedEquipe = equipeService.update(id, equipe);
+    public ResponseEntity<Equipe> update(@PathVariable long id, @RequestBody EquipeDTO equipeDTO) {
+        Optional<Equipe> updatedEquipe = equipeService.update(id, equipeDTO);
 
         return updatedEquipe.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

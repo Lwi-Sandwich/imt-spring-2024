@@ -1,7 +1,10 @@
 package org.imt.tournamentmaster.service.equipe;
 
+import org.imt.tournamentmaster.dto.EquipeDTO;
 import org.imt.tournamentmaster.model.equipe.Equipe;
+import org.imt.tournamentmaster.model.equipe.Joueur;
 import org.imt.tournamentmaster.repository.equipe.EquipeRepository;
+import org.imt.tournamentmaster.repository.equipe.JoueurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +17,12 @@ import java.util.stream.StreamSupport;
 public class EquipeService {
 
     private final EquipeRepository equipeRepository;
+    private final JoueurRepository joueurRepository;
 
     @Autowired
-    public EquipeService(EquipeRepository equipeRepository) {
+    public EquipeService(EquipeRepository equipeRepository, JoueurRepository joueurRepository) {
         this.equipeRepository = equipeRepository;
+        this.joueurRepository = joueurRepository;
     }
 
     @Transactional(readOnly = true)
@@ -32,17 +37,30 @@ public class EquipeService {
     }
 
     @Transactional
-    public Equipe create(Equipe equipe) {
+    public Equipe create(EquipeDTO equipeDTO) {
+        List<Joueur> joueurs = joueurRepository.findAllById(equipeDTO.getJoueurIds());
+        if (joueurs.size() != (equipeDTO.getJoueurIds() == null ? 0 : equipeDTO.getJoueurIds().size())) {
+            throw new IllegalArgumentException("Some player IDs do not exist.");
+        }
+        Equipe equipe = new Equipe();
+        equipe.setNom(equipeDTO.getNom());
+        equipe.setJoueurs(joueurs);
+
         return equipeRepository.save(equipe);
     }
 
     @Transactional
-    public Optional<Equipe> update(long id, Equipe equipe) {
-        if (equipeRepository.existsById(id)) {
-            return Optional.of(equipeRepository.save(equipe));
-        } else {
-            return Optional.empty();
-        }
+    public Optional<Equipe> update(long id, EquipeDTO equipeDTO ) {
+        return equipeRepository.findById(id)
+            .map(existingEquipe -> {
+                List<Joueur> joueurs = joueurRepository.findAllById(equipeDTO.getJoueurIds());
+                if (joueurs.size() != (equipeDTO.getJoueurIds() == null ? 0 : equipeDTO.getJoueurIds().size())) {
+                    throw new IllegalArgumentException("Some player IDs do not exist.");
+                }
+                existingEquipe.setNom(equipeDTO.getNom());
+                existingEquipe.setJoueurs(joueurs);
+                return equipeRepository.save(existingEquipe);
+            });
     }
 
     @Transactional
