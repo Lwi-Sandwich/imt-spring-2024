@@ -33,16 +33,21 @@ public class JoueurService {
 
     @Transactional
     public Joueur create(Joueur joueur) {
+        if (joueur.getId() != 0 && joueurRepository.existsById(joueur.getId())) {
+            throw new IllegalArgumentException("A joueur with this ID already exists: " + joueur.getId());
+        }
         return joueurRepository.save(joueur);
     }
 
     @Transactional
-    public Optional<Joueur> update(long id, Joueur joueur) {
-        if (joueurRepository.existsById(id)) {
-            return Optional.of(joueurRepository.save(joueur));
-        } else {
-            return Optional.empty();
-        }
+    public Optional<Joueur> update(long id, Joueur updatedJoueur) {
+        return joueurRepository.findById(id)
+            .map(existingJoueur -> {
+                existingJoueur.setNom(updatedJoueur.getNom());
+                existingJoueur.setPrenom(updatedJoueur.getPrenom());
+                existingJoueur.setNumero(updatedJoueur.getNumero());
+                return joueurRepository.save(existingJoueur);
+            });
     }
 
     @Transactional

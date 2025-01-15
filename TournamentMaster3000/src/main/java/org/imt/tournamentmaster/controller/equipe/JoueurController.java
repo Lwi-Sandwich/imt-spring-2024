@@ -3,6 +3,7 @@ package org.imt.tournamentmaster.controller.equipe;
 import org.imt.tournamentmaster.model.equipe.Joueur;
 import org.imt.tournamentmaster.service.equipe.JoueurService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,11 @@ public class JoueurController {
 
     @PostMapping
     public ResponseEntity<Joueur> createJoueur(@RequestBody Joueur joueur) {
-        return ResponseEntity.ok(joueurService.create(joueur));
+        try {
+            return ResponseEntity.ok(joueurService.create(joueur));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        }
     }
 
     @PutMapping("/{id}")

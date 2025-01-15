@@ -4,14 +4,13 @@ import org.imt.tournamentmaster.model.equipe.Equipe;
 import org.imt.tournamentmaster.model.equipe.Joueur;
 import org.imt.tournamentmaster.model.match.Match;
 import org.imt.tournamentmaster.model.match.Round;
-import org.imt.tournamentmaster.model.resultat.Resultat;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class TestUtils {
 
-    public static Resultat generateResultat() {
+    public static Match generateMatch() {
         // create 6 joueurs
         Joueur joueur1 = new Joueur(1L, "Doe", "John", 1);
         Joueur joueur2 = new Joueur(2L, "Doe", "Jane", 2);
@@ -36,9 +35,6 @@ public abstract class TestUtils {
         rounds.add(round3);
 
         // create a match
-        Match match = new Match(1L, equipe1, equipe2, rounds, Match.Status.TERMINE);
-
-        // create a resultat
-        return new Resultat(1L, match);
+		return new Match(1L, equipe1, equipe2, rounds, Match.Status.TERMINE);
     }
 }
