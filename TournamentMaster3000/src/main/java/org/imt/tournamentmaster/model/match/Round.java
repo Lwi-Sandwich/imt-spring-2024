@@ -11,7 +11,6 @@ import java.util.Objects;
 @Entity
 public class Round {
 
-    @JsonIgnore
     @Id
     private long id;
 

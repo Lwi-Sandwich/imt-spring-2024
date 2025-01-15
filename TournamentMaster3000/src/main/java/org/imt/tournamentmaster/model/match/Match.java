@@ -11,7 +11,6 @@ import java.util.Objects;
 @Table(name = "`match`")
 public class Match {
 
-    @JsonIgnore
     @Id
     private long id;
 

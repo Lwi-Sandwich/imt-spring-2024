@@ -9,7 +9,6 @@ import java.util.Objects;
 @Entity
 public class Joueur {
 
-    @JsonIgnore
     @Id
     private long id;
 
@@ -41,6 +40,10 @@ public class Joueur {
         return numero;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -56,6 +59,7 @@ public class Joueur {
     public void setNumero(int numero) {
         this.numero = numero;
     }
+
 
     @Override
     public String toString() {
