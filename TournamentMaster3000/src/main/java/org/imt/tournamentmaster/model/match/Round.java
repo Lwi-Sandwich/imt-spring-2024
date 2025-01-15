@@ -6,7 +6,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import org.imt.tournamentmaster.model.equipe.Equipe;
 
+import javax.swing.text.html.Option;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 public class Round {
@@ -15,9 +17,11 @@ public class Round {
     private long id;
 
     @OneToOne
+    @JsonIgnore
     private Equipe equipeA;
 
     @OneToOne
+    @JsonIgnore
     private Equipe equipeB;
 
     private int scoreA;
@@ -40,6 +44,14 @@ public class Round {
 
     public long getId() {
         return id;
+    }
+
+    public long getEquipeAId() {
+        return equipeA.getId();
+    }
+
+    public long getEquipeBId() {
+        return equipeB.getId();
     }
 
     public Equipe getEquipeA() {
@@ -86,12 +98,13 @@ public class Round {
         this.roundNumber = roundNumber;
     }
 
-    public Equipe determineWinner() {
+    public Optional<Equipe> determineWinner() {
         if (scoreA > scoreB) {
-            return equipeA;
-        } else {
-            return equipeB;
+            return Optional.of(equipeA);
+        } else if (scoreA < scoreB) {
+            return Optional.of(equipeB);
         }
+        return Optional.empty();
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.imt.tournamentmaster.model.equipe.Equipe;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 @Table(name = "`match`")
@@ -81,11 +82,11 @@ public class Match {
         int wonByB = 0;
 
         for (Round round : rounds) {
-            Equipe winner = round.determineWinner();
+            Optional<Equipe> winner = round.determineWinner();
 
-            if (winner.equals(equipeA)) {
+            if (winner.isPresent() && winner.get().equals(equipeA)) {
                 wonByA++;
-            } else if (winner.equals(equipeB)) {
+            } else if (winner.isPresent()) {
                 wonByB++;
             }
         }
