@@ -77,7 +77,7 @@ public class Match {
         this.status = status;
     }
 
-    public Equipe determineWinner() {
+    public Optional<Equipe> determineWinner() {
         int wonByA = 0;
         int wonByB = 0;
 
@@ -90,12 +90,13 @@ public class Match {
                 wonByB++;
             }
         }
-
-        if (wonByA > wonByB) {
-            return equipeA;
-        } else {
-            return equipeB;
+        if (wonByA == wonByB) {
+            return Optional.empty();
         }
+        if (wonByA > wonByB) {
+            return Optional.of(equipeA);
+        }
+        return Optional.of(equipeB);
     }
 
     @Override
