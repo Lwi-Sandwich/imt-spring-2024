@@ -12,6 +12,7 @@ import java.util.Objects;
 public class Match {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @OneToOne

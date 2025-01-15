@@ -30,4 +30,25 @@ public class EquipeService {
         return StreamSupport.stream(equipeRepository.findAll().spliterator(), false)
                 .toList();
     }
+
+    @Transactional
+    public Equipe create(Equipe equipe) {
+        return equipeRepository.save(equipe);
+    }
+
+    @Transactional
+    public Optional<Equipe> update(long id, Equipe equipe) {
+        if (equipeRepository.existsById(id)) {
+            return Optional.of(equipeRepository.save(equipe));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Transactional
+    public Optional<Equipe> delete(long id) {
+        Optional<Equipe> equipe = getById(id);
+        equipe.ifPresent(equipeRepository::delete);
+        return equipe;
+    }
 }

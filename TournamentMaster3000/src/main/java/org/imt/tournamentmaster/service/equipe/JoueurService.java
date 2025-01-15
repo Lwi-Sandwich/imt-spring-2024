@@ -30,4 +30,25 @@ public class JoueurService {
         return StreamSupport.stream(joueurRepository.findAll().spliterator(), false)
                 .toList();
     }
+
+    @Transactional
+    public Joueur create(Joueur joueur) {
+        return joueurRepository.save(joueur);
+    }
+
+    @Transactional
+    public Optional<Joueur> update(long id, Joueur joueur) {
+        if (joueurRepository.existsById(id)) {
+            return Optional.of(joueurRepository.save(joueur));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Transactional
+    public Optional<Joueur> delete(long id) {
+        Optional<Joueur> joueur = getById(id);
+        joueur.ifPresent(joueurRepository::delete);
+        return joueur;
+    }
 }

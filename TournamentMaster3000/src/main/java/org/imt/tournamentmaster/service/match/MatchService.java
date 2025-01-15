@@ -30,4 +30,25 @@ public class MatchService {
         return StreamSupport.stream(matchRepository.findAll().spliterator(), false)
                 .toList();
     }
+
+    @Transactional
+    public Match create(Match match) {
+        return matchRepository.save(match);
+    }
+
+    @Transactional
+    public Optional<Match> update(long id, Match match) {
+        if (matchRepository.existsById(id)) {
+            return Optional.of(matchRepository.save(match));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Transactional
+    public Optional<Match> delete(long id) {
+        Optional<Match> match = getById(id);
+        match.ifPresent(matchRepository::delete);
+        return match;
+    }
 }

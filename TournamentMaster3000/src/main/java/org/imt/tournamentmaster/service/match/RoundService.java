@@ -34,4 +34,25 @@ public class RoundService {
     public List<Round> getByScoreAGreaterThanEqual(int scoreA) {
         return roundRepository.findByScoreAGreaterThanEqual(scoreA);
     }
+
+    @Transactional
+    public Round create(Round round) {
+        return roundRepository.save(round);
+    }
+
+    @Transactional
+    public Optional<Round> update(long id, Round round) {
+        if (roundRepository.existsById(id)) {
+            return Optional.of(roundRepository.save(round));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Transactional
+    public Optional<Round> delete(long id) {
+        Optional<Round> round = getById(id);
+        round.ifPresent(roundRepository::delete);
+        return round;
+    }
 }
