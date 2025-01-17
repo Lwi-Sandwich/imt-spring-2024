@@ -69,4 +69,32 @@ public class EquipeService {
         equipe.ifPresent(equipeRepository::delete);
         return equipe;
     }
+
+    @Transactional
+    public Optional<Equipe> addJoueurs(long id, List<Long> joueursIds) {
+        Optional<Equipe> equipe = getById(id);
+        if (equipe.isEmpty()) {
+            return Optional.empty();
+        }
+        List<Joueur> joueurs = joueurRepository.findAllById(joueursIds);
+        if (joueurs.size() != joueursIds.size()) {
+            throw new IllegalArgumentException("Some player IDs do not exist.");
+        }
+        equipe.get().getJoueurs().addAll(joueurs);
+        return Optional.of(equipeRepository.save(equipe.get()));
+    }
+
+    @Transactional
+    public Optional<Equipe> removeJoueurs(long id, List<Long> joueursIds) {
+        Optional<Equipe> equipe = getById(id);
+        if (equipe.isEmpty()) {
+            return Optional.empty();
+        }
+        List<Joueur> joueurs = joueurRepository.findAllById(joueursIds);
+        if (joueurs.size() != joueursIds.size()) {
+            throw new IllegalArgumentException("Some player IDs do not exist.");
+        }
+        equipe.get().getJoueurs().removeAll(joueurs);
+        return Optional.of(equipeRepository.save(equipe.get()));
+    }
 }

@@ -54,4 +54,20 @@ public class EquipeController {
         return equipe.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @PostMapping("/{id}/joueurs")
+    public ResponseEntity<Equipe> addJoueurs(@PathVariable long id, @RequestBody List<Long> joueursIds) {
+        Optional<Equipe> equipe = equipeService.addJoueurs(id, joueursIds);
+
+        return equipe.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}/joueurs")
+    public ResponseEntity<Equipe> removeJoueurs(@PathVariable long id, @RequestBody List<Long> joueursIds) {
+        Optional<Equipe> equipe = equipeService.removeJoueurs(id, joueursIds);
+
+        return equipe.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }
