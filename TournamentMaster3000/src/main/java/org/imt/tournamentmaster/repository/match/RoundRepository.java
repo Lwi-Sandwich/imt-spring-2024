@@ -19,4 +19,5 @@ public interface RoundRepository extends CrudRepository<Round, Long> {
      * Pour faire du sql classique, il faut passer par des Native Query
      */
     List<Round> findByScoreAGreaterThanEqual(int scoreA);
+    List<Round> findAllById(Iterable<Long> ids);
 }

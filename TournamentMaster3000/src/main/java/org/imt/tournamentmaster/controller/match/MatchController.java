@@ -1,5 +1,6 @@
 package org.imt.tournamentmaster.controller.match;
 
+import org.imt.tournamentmaster.dto.MatchDTO;
 import org.imt.tournamentmaster.model.match.Match;
 import org.imt.tournamentmaster.service.match.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,13 @@ public class MatchController {
     }
 
     @PostMapping
-    public ResponseEntity<Match> create(@RequestBody Match match) {
-        return ResponseEntity.ok(matchService.create(match));
+    public ResponseEntity<Match> create(@RequestBody MatchDTO matchDTO) {
+        return ResponseEntity.ok(matchService.create(matchDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Match> update(@PathVariable long id, @RequestBody Match match) {
-        Optional<Match> updatedMatch = matchService.update(id, match);
+    public ResponseEntity<Match> update(@PathVariable long id, @RequestBody MatchDTO matchDTO) {
+        Optional<Match> updatedMatch = matchService.update(id, matchDTO);
 
         return updatedMatch.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -52,5 +53,15 @@ public class MatchController {
 
         return match.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/{id}/rounds")
+    public ResponseEntity<Match> addRounds(@PathVariable long id, @RequestBody List<Long> roundIds) {
+        return ResponseEntity.ok(matchService.addRounds(id, roundIds));
+    }
+
+    @DeleteMapping("/{id}/rounds")
+    public ResponseEntity<Match> removeRounds(@PathVariable long id, @RequestBody List<Long> roundIds) {
+        return ResponseEntity.ok(matchService.removeRounds(id, roundIds));
     }
 }
