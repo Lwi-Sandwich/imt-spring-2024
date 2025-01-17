@@ -1,5 +1,6 @@
 package org.imt.tournamentmaster.controller.match;
 
+import org.imt.tournamentmaster.dto.RoundDTO;
 import org.imt.tournamentmaster.model.match.Round;
 import org.imt.tournamentmaster.service.match.RoundService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +40,13 @@ public class RoundController {
     }
 
     @PostMapping
-    public ResponseEntity<Round> create(@RequestBody Round round) {
-        return ResponseEntity.ok(roundService.create(round));
+    public ResponseEntity<Round> create(@RequestBody RoundDTO roundDTO) {
+        return ResponseEntity.ok(roundService.create(roundDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Round> update(@PathVariable long id, @RequestBody Round round) {
-        Optional<Round> updatedRound = roundService.update(id, round);
+    public ResponseEntity<Round> update(@PathVariable long id, @RequestBody RoundDTO roundDTO) {
+        Optional<Round> updatedRound = roundService.update(id, roundDTO);
 
         return updatedRound.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
