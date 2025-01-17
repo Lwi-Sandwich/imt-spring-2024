@@ -80,7 +80,7 @@ public class EquipeService {
         if (joueurs.size() != joueursIds.size()) {
             throw new IllegalArgumentException("Some player IDs do not exist.");
         }
-        equipe.get().getJoueurs().addAll(joueurs);
+        equipe.get().addJoueurs(joueurs);
         return Optional.of(equipeRepository.save(equipe.get()));
     }
 
@@ -94,7 +94,7 @@ public class EquipeService {
         if (joueurs.size() != joueursIds.size()) {
             throw new IllegalArgumentException("Some player IDs do not exist.");
         }
-        equipe.get().getJoueurs().removeAll(joueurs);
+        equipe.get().removeJoueurs(joueurs);
         return Optional.of(equipeRepository.save(equipe.get()));
     }
 }

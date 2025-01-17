@@ -17,12 +17,15 @@ public class Match {
     private long id;
 
     @OneToOne
+    @JsonIgnore
     private Equipe equipeA;
 
     @OneToOne
+    @JsonIgnore
     private Equipe equipeB;
 
     @OneToMany
+    @JsonIgnore
     private List<Round> rounds; // Set est un type de collection, on va éviter les confusions et appeler ça un "round"
 
     private Status status;
@@ -50,8 +53,33 @@ public class Match {
         return equipeB;
     }
 
+    public long getEquipeAId() {
+        return equipeA.getId();
+    }
+
+    public long getEquipeBId() {
+        return equipeB.getId();
+    }
+
+    public String getEquipeAName() {
+        return equipeA.getNom();
+    }
+
+    public String getEquipeBName() {
+        return equipeB.getNom();
+    }
+
+    public long getWinnerId() {
+        Optional<Equipe> winner = determineWinner();
+        return winner.map(Equipe::getId).orElse(-1L);
+    }
+
     public List<Round> getRounds() {
         return rounds;
+    }
+
+    public List<Long> getRoundIds() {
+        return rounds.stream().map(Round::getId).toList();
     }
 
     public Status getStatus() {
@@ -77,6 +105,15 @@ public class Match {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public void addRounds(List<Round> rounds) {
+        this.rounds.addAll(rounds);
+    }
+
+    public void removeRounds(List<Round> rounds) {
+        this.rounds.removeAll(rounds);
+    }
+
 
     public Optional<Equipe> determineWinner() {
         int wonByA = 0;

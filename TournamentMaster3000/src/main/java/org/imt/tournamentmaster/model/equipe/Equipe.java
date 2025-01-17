@@ -51,6 +51,14 @@ public class Equipe {
         this.joueurs = joueurs;
     }
 
+    public void addJoueurs(List<Joueur> joueurs) {
+        this.joueurs.addAll(joueurs);
+    }
+
+    public void removeJoueurs(List<Joueur> joueurs) {
+        this.joueurs.removeAll(joueurs);
+    }
+
     @Override
     public String toString() {
         return "Equipe{" +
